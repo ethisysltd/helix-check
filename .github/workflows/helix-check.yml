@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  check:
+  check_job:
     name: Helix check
     runs-on: ubuntu-latest
 
@@ -15,14 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Hello world action step
+      - name: npm setup
+        run: |
+          npm install
+          npm run all
+
+      - name: Helix check action step
         uses: ./ # Uses an action in the root directory
-        id: hello
+        id: check
         with:
-          who-to-greet: 'Mona the Octocat'
+          solution-file: 'Test.sln'
+      
+      - name: Get the check result
+        run: echo "Check result ${{ steps.check.outputs.result }}"
       
       - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+        run: echo "The time was ${{ steps.check.outputs.time }}"
 
 #      - name: Setup .NET Core
 #        uses: actions/setup-dotnet@v1
@@ -37,3 +45,23 @@ jobs:
 
 #      - name: Test
 #        run: dotnet test --no-restore --verbosity normal
+
+
+#on: [push]
+
+#jobs:
+#  hello_world_job:
+#    runs-on: ubuntu-latest
+#    name: A job to say hello
+#    steps:
+#      # To use this repository's private action, you must check out the repository
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Hello world action step
+#        uses: ./ # Uses an action in the root directory
+#        id: hello
+#        with:
+#          who-to-greet: 'Mona the Octocat'
+#      # Use the output from the `hello` step
+#      - name: Get the output time
+#        run: echo "The time was ${{ steps.hello.outputs.time }}"
