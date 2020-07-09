@@ -7,19 +7,33 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  check:
+    name: Helix check
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
+        id: hello
+        with:
+          who-to-greet: 'Mona the Octocat'
+      
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
+
+#      - name: Setup .NET Core
+#        uses: actions/setup-dotnet@v1
+#        with:
+#          dotnet-version: 3.1.101
+
+#      - name: Install dependencies
+#        run: dotnet restore
+
+#      - name: Build
+#        run: dotnet build --configuration Release --no-restore
+
+#      - name: Test
+#        run: dotnet test --no-restore --verbosity normal
