@@ -24,7 +24,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: check
         with:
-          solution-file: '/example-solution/Helix.sln'
+          solution-file: 'example-solution/Helix.sln'
       
       - name: Get the check result
         run: echo "Check result - ${{ steps.check.outputs.result }}"
