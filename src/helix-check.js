@@ -17,6 +17,7 @@ async function check() {
             fs.readFile(solutionFile, 'utf8', function(err, contents) {
                 if (err) {
                     console.log(err);
+                    core.setFailed(err);
                 }
 
                 console.log(contents);
@@ -26,7 +27,7 @@ async function check() {
         } 
         
         else {
-            console.log('Solution file does not exist.');
+            core.setFailed('Solution file does not exist.');
         }
 
 
