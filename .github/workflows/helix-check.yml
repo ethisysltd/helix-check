@@ -24,13 +24,13 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: check
         with:
-          solution-file: 'Test.sln'
+          solution-file: '/example-solution/Helix.sln'
       
       - name: Get the check result
-        run: echo "Check result ${{ steps.check.outputs.result }}"
+        run: echo "Check result - ${{ steps.check.outputs.result }}"
       
       - name: Get the output time
-        run: echo "The time was ${{ steps.check.outputs.time }}"
+        run: echo "The time was - ${{ steps.check.outputs.time }}"
 
 #      - name: Setup .NET Core
 #        uses: actions/setup-dotnet@v1
