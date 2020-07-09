@@ -12,7 +12,7 @@ async function check() {
 
 
         if (fs.existsSync(solutionFile)) {
-            console.log('The file exists.');
+            console.log('Solution file exists.');
 
             fs.readFile(solutionFile, 'utf8', function(err, contents) {
                 if (err) {
@@ -26,7 +26,7 @@ async function check() {
         } 
         
         else {
-
+            console.log('Solution file does not exist.');
         }
 
 
