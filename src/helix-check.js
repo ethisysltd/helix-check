@@ -23,8 +23,8 @@ async function check() {
         if (fs.existsSync(solutionFile)) {
             console.log('Solution file exists.');
 
-            result = analyze(solutionFile);
-            
+            await analyze(solutionFile);
+            result = checkResult();
         } 
         
         else {
@@ -53,7 +53,7 @@ async function check() {
 
 }
 
-function analyze(path) {
+async function analyze(path) {
     const projectLineRegex = /Project\(\"{(.+)}\"\) \= \"(.+)\", \"(.+)\", \"{(.+)}\"/;
 
     const readInterface = readline.createInterface({
@@ -82,8 +82,6 @@ function analyze(path) {
             }
         }        
     });
-
-    return checkResult();
 
     // fs.readFile(solutionFile, 'utf8', function(err, contents) {
     //     if (err) {
