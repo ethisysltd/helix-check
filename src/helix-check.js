@@ -3,7 +3,7 @@ const github = require('@actions/github');
 const fs = require('fs');
 const readline = require('readline');
 
-var Analysis = {
+global.Analysis = {
     Solution: {
         HasFeatureFolder: false,
         HasFoundationFolder: false,
@@ -68,15 +68,15 @@ function analyze(path) {
         //var projectLineMatch = [...matchAll];
         console.log(projectLineMatch);
 
-        if (projectLineMatch != null && projectLineMatch.length == 5) {
+        if (projectLineMatch != null && projectLineMatch.length >= 3) {
             if (projectLineMatch[2] == "Feature") {
-                Analysis.Solution.HasFeatureFolder = true;
+                global.Analysis.Solution.HasFeatureFolder = true;
             }
             else if (projectLineMatch[2] == "Foundation") {
-                Analysis.Solution.HasFoundationFolder = true;
+                global.Analysis.Solution.HasFoundationFolder = true;
             }
             else if (projectLineMatch[2] == "Project") {
-                Analysis.Solution.HasProjectFolder = true;
+                global.Analysis.Solution.HasProjectFolder = true;
             }
         }        
     });
@@ -94,18 +94,18 @@ function analyze(path) {
 function checkResult() {
     var result = true;
 
-    if (!Analysis.Solution.HasFeatureFolder) {
-        console.log('No Feature folder in solution structure');
+    if (!global.Analysis.Solution.HasFeatureFolder) {
+        console.warn('No Feature folder in solution structure');
         result = false;
     }
 
-    if (!Analysis.Solution.HasFoundationFolder) {
-        console.log('No Foundation folder in solution structure');
+    if (!global.Analysis.Solution.HasFoundationFolder) {
+        console.warn('No Foundation folder in solution structure');
         result = false;
     }
     
-    if (!Analysis.Solution.HasProjectFolder) {
-        console.log('No Project folder in solution structure');
+    if (!global.Analysis.Solution.HasProjectFolder) {
+        console.warn('No Project folder in solution structure');
         result = false;
     }
 
