@@ -1,4 +1,4 @@
-name: Helix Check
+name: Helix Check - Valid
 
 on:
   push:
