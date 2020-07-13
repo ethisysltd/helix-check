@@ -54,34 +54,43 @@ async function check() {
 }
 
 async function analyze(path) {
-    const projectLineRegex = /Project\(\"{(.+)}\"\) \= \"(.+)\", \"(.+)\", \"{(.+)}\"/;
+    return new Promise((resolve, reject) => {
+        const projectLineRegex = /Project\(\"{(.+)}\"\) \= \"(.+)\", \"(.+)\", \"{(.+)}\"/;
 
-    const readInterface = readline.createInterface({
-        input: fs.createReadStream(path),
-        output: process.stdout,
-        console: false
+        const readInterface = readline.createInterface({
+            input: fs.createReadStream(path),
+            output: process.stdout,
+            console: false
+        });
+    
+        readInterface.on('line', function(line) {
+            console.log(line);
+            var projectLineMatch = line.match(projectLineRegex);
+            //var projectLineMatch = [...matchAll];
+            console.log(projectLineMatch);
+            if (projectLineMatch != null && projectLineMatch.length >= 3) {
+                console.log("projectLineMatch[2]:  " + projectLineMatch[2]);
+                if (projectLineMatch[2] == "Feature") {
+                    global.Analysis.Solution.HasFeatureFolder = true;
+                }
+                else if (projectLineMatch[2] == "Foundation") {
+                    console.log("Foundation!!!");
+                    global.Analysis.Solution.HasFoundationFolder = true;
+                    console.log(global.Analysis.Solution.HasFoundationFolder);
+                }
+                else if (projectLineMatch[2] == "Project") {
+                    global.Analysis.Solution.HasProjectFolder = true;
+                }
+            }        
+        })
+        .on('close', () => {
+            resolve('finished');
+        })
+        .on('error', err => {
+            reject(err);
+        });
     });
-
-    readInterface.on('line', function(line) {
-        console.log(line);
-        var projectLineMatch = line.match(projectLineRegex);
-        //var projectLineMatch = [...matchAll];
-        console.log(projectLineMatch);
-        if (projectLineMatch != null && projectLineMatch.length >= 3) {
-            console.log("projectLineMatch[2]:  " + projectLineMatch[2]);
-            if (projectLineMatch[2] == "Feature") {
-                global.Analysis.Solution.HasFeatureFolder = true;
-            }
-            else if (projectLineMatch[2] == "Foundation") {
-                console.log("Foundation!!!");
-                global.Analysis.Solution.HasFoundationFolder = true;
-                console.log(global.Analysis.Solution.HasFoundationFolder);
-            }
-            else if (projectLineMatch[2] == "Project") {
-                global.Analysis.Solution.HasProjectFolder = true;
-            }
-        }        
-    });
+    
 
     // fs.readFile(solutionFile, 'utf8', function(err, contents) {
     //     if (err) {
