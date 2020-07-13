@@ -73,7 +73,9 @@ function analyze(path) {
                 global.Analysis.Solution.HasFeatureFolder = true;
             }
             else if (projectLineMatch[2] == "Foundation") {
+                console.log("Foundation!!!");
                 global.Analysis.Solution.HasFoundationFolder = true;
+                console.log(global.Analysis.Solution.HasFoundationFolder);
             }
             else if (projectLineMatch[2] == "Project") {
                 global.Analysis.Solution.HasProjectFolder = true;
