@@ -53,7 +53,7 @@ async function check() {
 
 }
 
-async function analyze(path) {
+function analyze(path) {
     var projectLineRegex = /^Project\("{(.+)}"\) = "(.+)", "(.+)", "{(.+)}"$/;
 
     const readInterface = readline.createInterface({
@@ -90,7 +90,7 @@ async function analyze(path) {
     // });
 }
 
-async function checkResult() {
+function checkResult() {
     var result = true;
 
     if (!Analysis.Solution.HasFeatureFolder) {
