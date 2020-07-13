@@ -23,8 +23,8 @@ async function check() {
         if (fs.existsSync(solutionFile)) {
             console.log('Solution file exists.');
 
-            analyze(solutionFile);
-            result = checkResult();
+            result = analyze(solutionFile);
+            
         } 
         
         else {
@@ -82,6 +82,8 @@ function analyze(path) {
             }
         }        
     });
+
+    return checkResult();
 
     // fs.readFile(solutionFile, 'utf8', function(err, contents) {
     //     if (err) {
