@@ -127,7 +127,7 @@ async function analyze(slnPath, projectName) {
                     global.Analysis.Solution.HasProjectFolder = true;
                 }
 
-                else if (projectNameFromLine.startsWith(projectName)) {
+                else if (projectNameFromLine.startsWith(projectName) && !projectNameFromLine.endsWith("Tests")) { // TODO: Add check for Tests project
                     var projectNameMatch = projectNameFromLine.match(projectNameRegex);
 
                     var projectEntry = new ProjectEntry(projectNameFromLine, false, false);
