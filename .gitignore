@@ -1,2 +1,6 @@
 bin/
 obj/
+
+example-solution/.vs/Helixbase/config/applicationhost.config
+
+example-solution/.vs/Helixbase/v16/.suo

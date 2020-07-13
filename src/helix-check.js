@@ -77,9 +77,9 @@ async function analyze(slnPath, projectName) {
          * Project line in sln file regular expression
          * Groups:
          *  [0]: Full line
-         *  [1]: Project guid
+         *  [1]: Project type guid
          *  [2]: Project name
-         *  [3]: Project path
+         *  [3]: Project guid
          *  [4]: Project parent guid
          */
         const projectLineRegex = /^Project\(\"{(.+)}\"\) \= \"(.+)\", \"(.+)\", \"{(.+)}\"/;
@@ -105,6 +105,9 @@ async function analyze(slnPath, projectName) {
          */
         const projectPathRegex = new RegExp(`^src\\\\(.+)\\\\(.+)\\\\code\\\\(.+)\\.csproj$`);
 
+        const slnProjectFolderGuid = '2150E333-8FDC-42A3-9474-1A3956D46DE8';
+        const slnProjectWebsiteGuid = 'FAE04EC0-301F-11D3-BF4B-00C04F79EFBC';
+
         const readInterface = readline.createInterface({
             input: fs.createReadStream(slnPath),
             output: process.stdout,
@@ -116,15 +119,20 @@ async function analyze(slnPath, projectName) {
             var projectLineMatch = line.match(projectLineRegex);
 
             if (projectLineMatch != null && projectLineMatch.length >= 5) {
+                var projectTypeFromLine = projectLineMatch[1];
                 var projectNameFromLine = projectLineMatch[2];
-                if (projectNameFromLine == "Feature") {
-                    global.Analysis.Solution.HasFeatureFolder = true;
-                }
-                else if (projectNameFromLine == "Foundation") {
-                    global.Analysis.Solution.HasFoundationFolder = true;
-                }
-                else if (projectNameFromLine == "Project") {
-                    global.Analysis.Solution.HasProjectFolder = true;
+
+                // - Project in sln is a folder
+                if (projectTypeFromLine == slnProjectFolderGuid) {
+                    if (projectNameFromLine == "Feature") {
+                        global.Analysis.Solution.HasFeatureFolder = true;
+                    }
+                    else if (projectNameFromLine == "Foundation") {
+                        global.Analysis.Solution.HasFoundationFolder = true;
+                    }
+                    else if (projectNameFromLine == "Project") {
+                        global.Analysis.Solution.HasProjectFolder = true;
+                    }
                 }
 
                 else if (projectNameFromLine.startsWith(projectName) && !projectNameFromLine.endsWith("Tests")) { // TODO: Add check for Tests project
