@@ -54,7 +54,7 @@ async function check() {
 }
 
 function analyze(path) {
-    var projectLineRegex = /^Project\("{(.+)}"\) = "(.+)", "(.+)", "{(.+)}"$/;
+    const projectLineRegex = /^Project\("{(.+)}"\) = "(.+)", "(.+)", "{(.+)}"$/g;
 
     const readInterface = readline.createInterface({
         input: fs.createReadStream(path),
@@ -64,7 +64,8 @@ function analyze(path) {
 
     readInterface.on('line', function(line) {
         console.log(line);
-        var projectLineMatch = line.match(projectLineRegex);
+        var matchAll = line.matchAll(projectLineRegex);
+        var projectLineMatch = [...matchAll];
         console.log(projectLineMatch);
 
         if (projectLineMatch != null && projectLineMatch.length == 5) {
