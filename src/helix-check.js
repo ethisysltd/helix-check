@@ -67,6 +67,7 @@ function analyze(path) {
         var projectLineMatch = line.match(projectLineRegex);
         //var projectLineMatch = [...matchAll];
         console.log(projectLineMatch);
+        console.log("projectLineMatch[2]:  " + projectLineMatch[2]);
 
         if (projectLineMatch != null && projectLineMatch.length >= 3) {
             if (projectLineMatch[2] == "Feature") {
