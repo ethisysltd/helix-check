@@ -4,7 +4,11 @@ inputs:
   solution-file:  # id of input
     description: 'Solution file'
     required: true
-    default: 'World'
+    default: 'SitecoreHelix.sln'
+  project-name:  # id of input
+    description: 'Project name - prefix for all project files'
+    required: true
+    default: 'Helixbase'
 outputs:
   result: # id of output
     description: 'If helix check successfull'

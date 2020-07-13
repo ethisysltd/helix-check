@@ -3,12 +3,27 @@ const github = require('@actions/github');
 const fs = require('fs');
 const readline = require('readline');
 
+class ProjectEntry {
+    constructor(Name, IsFileNameCorrect, HasProjectFolder) {
+        this.Name = Name;
+        this.IsFileNameCorrect = IsFileNameCorrect;
+        this.HasProjectFolder = HasProjectFolder;
+    }
+}
+
 global.Analysis = {
     Solution: {
         HasFeatureFolder: false,
         HasFoundationFolder: false,
         HasProjectFolder: false
-    }
+    },
+    Projects: [
+        // {
+        //     Name: '',
+        //     IsFileNameCorrect: false,
+        //     IsFolderCorrect: false
+        // }
+    ]
 };
 
 async function check() {
@@ -17,12 +32,15 @@ async function check() {
         var result = false;
         
         const solutionFile = core.getInput('solution-file');
+        const projectName = core.getInput('project-name');
+
         console.log(`Solution file: ${solutionFile}`);
+        console.log(`Project name: ${projectName}`);
 
         if (fs.existsSync(solutionFile)) {
             console.log('Solution file exists.');
 
-            await analyze(solutionFile);
+            await analyze(solutionFile, projectName);
             result = checkResult();
         } 
         
@@ -53,12 +71,42 @@ async function check() {
 
 }
 
-async function analyze(path) {
+async function analyze(slnPath, projectName) {
     return new Promise((resolve, reject) => {
+        /**
+         * Project line in sln file regular expression
+         * Groups:
+         *  [0]: Full line
+         *  [1]: Project guid
+         *  [2]: Project name
+         *  [3]: Project path
+         *  [4]: Project parent guid
+         */
         const projectLineRegex = /^Project\(\"{(.+)}\"\) \= \"(.+)\", \"(.+)\", \"{(.+)}\"/;
 
+        /**
+         * Project name regular expression
+         * Groups:
+         *  [0]: Full project name
+         *  [1]: Layer name
+         *  [2]: Project name
+         * Example: "Helixbase.Foundation.ORM"
+         */
+        const projectNameRegex = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
+
+        /**
+         * Project path regular expression
+         * Groups:
+         *  [0]: Full project path
+         *  [1]: Layer name
+         *  [2]: Project name
+         *  [3]: Full project name
+         * Example: "src\Foundation\ORM\code\Helixbase.Foundation.ORM.csproj"
+         */
+        const projectPathRegex = new RegExp(`^src\\\\(.+)\\\\(.+)\\\\code\\\\(.+)\\.csproj$`);
+
         const readInterface = readline.createInterface({
-            input: fs.createReadStream(path),
+            input: fs.createReadStream(slnPath),
             output: process.stdout,
             console: false
         });
@@ -67,16 +115,46 @@ async function analyze(path) {
             //console.log(line);
             var projectLineMatch = line.match(projectLineRegex);
 
-            if (projectLineMatch != null && projectLineMatch.length >= 3) {
-                console.log("projectLineMatch[2]:  " + projectLineMatch[2]);
-                if (projectLineMatch[2] == "Feature") {
+            if (projectLineMatch != null && projectLineMatch.length >= 5) {
+                var projectNameFromLine = projectLineMatch[2];
+                if (projectNameFromLine == "Feature") {
                     global.Analysis.Solution.HasFeatureFolder = true;
                 }
-                else if (projectLineMatch[2] == "Foundation") {
+                else if (projectNameFromLine == "Foundation") {
                     global.Analysis.Solution.HasFoundationFolder = true;
                 }
-                else if (projectLineMatch[2] == "Project") {
+                else if (projectNameFromLine == "Project") {
                     global.Analysis.Solution.HasProjectFolder = true;
+                }
+
+                else if (projectNameFromLine.startsWith(projectName)) {
+                    var projectNameMatch = projectNameFromLine.match(projectNameRegex);
+
+                    var projectEntry = new ProjectEntry(projectNameFromLine, false, false);
+
+                    if (projectNameMatch == null) {
+                        console.warn(`Couldn't match ${projectNameFromLine} with project path regex`)
+                    }
+
+                    else if (projectNameMatch.length >= 3) {
+                        var layer = projectNameMatch[1];
+                        var path = projectLineMatch[3];
+                        var projectPathMatch = path.match(projectPathRegex);
+
+                        if (projectPathMatch == null) {
+                            console.warn(`Couldn't match ${path} with project path regex`)
+                            projectEntry.IsFolderCorrect = false;
+                        }
+                        else if (projectPathMatch.length >= 4) {
+                            // - Check if folder is correct - layer name -
+                            projectEntry.IsFolderCorrect = (layer == projectPathMatch[1]);
+
+                            // - Check if file name is correct -
+                            projectEntry.IsFileNameCorrect = (projectNameFromLine == projectPathMatch[3])
+                        }
+                    }
+
+                    global.Analysis.Projects.push(projectEntry);
                 }
             }        
         })
@@ -105,6 +183,20 @@ function checkResult() {
     if (!global.Analysis.Solution.HasProjectFolder) {
         console.warn('No Project folder in solution structure');
         result = false;
+    }
+
+    if (global.Analysis.Projects != null) {
+        global.Analysis.Projects.forEach((project) => {
+            if (!project.IsFolderCorrect) {
+                console.warn(`Folder incorrect for project ${project.Name}`);
+                result = false;
+            }
+
+            if (!project.IsFileNameCorrect) {
+                console.warn(`File name incorrect for project ${project.Name}`);
+                result = false;
+            }
+        });
     }
 
     return result;

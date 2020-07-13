@@ -24,7 +24,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: check
         with:
-          solution-file: 'example-solution/Helixbase.sln'
+          solution-file: 'example-solution/Helixbase-Invalid.sln'
           project-name: 'Helixbase'
       
       - name: Get the check result
