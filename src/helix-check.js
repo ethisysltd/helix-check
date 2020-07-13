@@ -65,7 +65,7 @@ async function analyze(path) {
     readInterface.on('line', function(line) {
         var projectLineMatch = line.match(projectLineRegex);
 
-        if (projectLineMatch.length == 5) {
+        if (projectLineMatch != null && projectLineMatch.length == 5) {
             if (projectLineMatch[2] == "Feature") {
                 Analysis.Solution.HasFeatureFolder = true;
             }
