@@ -63,6 +63,7 @@ function analyze(path) {
     });
 
     readInterface.on('line', function(line) {
+        console.log(line);
         var projectLineMatch = line.match(projectLineRegex);
 
         if (projectLineMatch != null && projectLineMatch.length == 5) {
@@ -75,9 +76,7 @@ function analyze(path) {
             else if (projectLineMatch[2] == "Project") {
                 Analysis.Solution.HasProjectFolder = true;
             }
-        }
-
-        //console.log(line);
+        }        
     });
 
     // fs.readFile(solutionFile, 'utf8', function(err, contents) {
