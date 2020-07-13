@@ -3,15 +3,15 @@ const github = require('@actions/github');
 const fs = require('fs');
 const readline = require('readline');
 
-global.Analysis = {
-    Solution: {
-        HasFeatureFolder: false,
-        HasFoundationFolder: false,
-        HasProjectFolder: false
-    }
-};
-
 async function check() {
+
+    global.Analysis = {
+        Solution: {
+            HasFeatureFolder: false,
+            HasFoundationFolder: false,
+            HasProjectFolder: false
+        }
+    };
 
     try {
         var result = false;
