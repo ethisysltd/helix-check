@@ -133,7 +133,7 @@ async function analyze(slnPath, projectName) {
                     var projectEntry = new ProjectEntry(projectNameFromLine, false, false);
 
                     if (projectNameMatch == null) {
-                        console.warn(`Couldn't match ${projectNameFromLine} with project path regex`)
+                        console.log(`Couldn't match ${projectNameFromLine} with project path regex`)
                     }
 
                     else if (projectNameMatch.length >= 3) {
@@ -142,7 +142,7 @@ async function analyze(slnPath, projectName) {
                         var projectPathMatch = path.match(projectPathRegex);
 
                         if (projectPathMatch == null) {
-                            console.warn(`Couldn't match ${path} with project path regex`)
+                            console.log(`Couldn't match ${path} with project path regex`)
                             projectEntry.IsFolderCorrect = false;
                         }
                         else if (projectPathMatch.length >= 4) {
@@ -171,29 +171,29 @@ function checkResult() {
     var result = true;
 
     if (!global.Analysis.Solution.HasFeatureFolder) {
-        console.warn('No Feature folder in solution structure');
+        console.log('No Feature folder in solution structure');
         result = false;
     }
 
     if (!global.Analysis.Solution.HasFoundationFolder) {
-        console.warn('No Foundation folder in solution structure');
+        console.log('No Foundation folder in solution structure');
         result = false;
     }
     
     if (!global.Analysis.Solution.HasProjectFolder) {
-        console.warn('No Project folder in solution structure');
+        console.log('No Project folder in solution structure');
         result = false;
     }
 
     if (global.Analysis.Projects != null) {
         global.Analysis.Projects.forEach((project) => {
             if (!project.IsFolderCorrect) {
-                console.warn(`Folder incorrect for project ${project.Name}`);
+                console.log(`Folder incorrect for project ${project.Name}`);
                 result = false;
             }
 
             if (!project.IsFileNameCorrect) {
-                console.warn(`File name incorrect for project ${project.Name}`);
+                console.log(`File name incorrect for project ${project.Name}`);
                 result = false;
             }
         });
