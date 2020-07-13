@@ -14,14 +14,24 @@ async function check() {
         if (fs.existsSync(solutionFile)) {
             console.log('Solution file exists.');
 
-            fs.readFile(solutionFile, 'utf8', function(err, contents) {
-                if (err) {
-                    console.log(err);
-                    core.setFailed(err);
-                }
-
-                console.log(contents);
+            const readInterface = readline.createInterface({
+                input: fs.createReadStream(solutionFile),
+                output: process.stdout,
+                console: false
             });
+
+            readInterface.on('line', function(line) {
+                console.log(line);
+            });
+
+            // fs.readFile(solutionFile, 'utf8', function(err, contents) {
+            //     if (err) {
+            //         console.log(err);
+            //         core.setFailed(err);
+            //     }
+
+            //     console.log(contents);
+            // });
 
             result = true;
         } 
