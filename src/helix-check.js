@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
 const readline = require('readline');
+const path = require('path');
 
 /**
  * Project line in sln file regular expression
@@ -218,8 +219,9 @@ async function analyzeProjects() {
  */
 async function analyzeProjectFile(project) {
     return new Promise((resolve, reject) => {
+        var basePath = path.dirname(project.Path);
         const readInterface = readline.createInterface({
-            input: fs.createReadStream(project.Path),
+            input: fs.createReadStream(basePath + "/" + project.Path),
             output: process.stdout,
             console: false
         });
