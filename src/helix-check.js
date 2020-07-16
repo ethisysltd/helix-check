@@ -133,7 +133,7 @@ async function check() {
 
 async function analyzeSln(slnPath, projectName) {
     projectNameRegex = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
-    
+
     return new Promise((resolve, reject) => {
         const readInterface = readline.createInterface({
             input: fs.createReadStream(slnPath),
@@ -174,7 +174,7 @@ async function analyzeSln(slnPath, projectName) {
                     }
 
                     else if (projectNameMatch.length >= 3) {
-                        project.Layer = projectNameMatch[1];
+                        projectEntry.Layer = projectNameMatch[1];
                         var projectPathMatch = projectPathFromLine.match(projectPathRegex);
 
                         if (projectPathMatch == null) {
