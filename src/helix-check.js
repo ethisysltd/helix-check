@@ -218,7 +218,7 @@ async function analyzeProjects() {
 async function analyzeProjectFile(project) {
     return new Promise((resolve, reject) => {
         var re = /\\/g;
-        var path = global.SolutionPath + "/" + project.Path.replace(re, '');
+        var path = global.SolutionPath + "/" + project.Path.replace(re, '/');
 
         const readInterface = readline.createInterface({
             input: fs.createReadStream(path),
