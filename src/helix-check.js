@@ -304,20 +304,24 @@ function checkResult() {
 
     if (global.Analysis.Projects != null) {
         global.Analysis.Projects.forEach((project) => {
+            if (!project.IsFolderCorrect || !project.IsFileNameCorrect || project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
+                console.log(`\nIssues with project ${project.Name}`);
+            }
+            
             if (!project.IsFolderCorrect) {
-                console.log(`Folder incorrect for project ${project.Name}`);
+                console.log(` Folder incorrect: ${project.Path}`);
                 result = false;
             }
 
             if (!project.IsFileNameCorrect) {
-                console.log(`File name incorrect for project ${project.Name}`);
+                console.log(` File name incorrect in sln file`);
                 result = false;
             }
 
             if (project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
-                console.log(`\nIncorrect references:`);
+                console.log(`\n Incorrect references:`);
                 project.IncorrectReferences.forEach(reference => {
-                    console.log(`  Incorrect reference in ${project.Name}: referencing ${reference}`);
+                    console.log(`  Incorrect reference: ${reference}`);
                 });
                 result = false;
             }
