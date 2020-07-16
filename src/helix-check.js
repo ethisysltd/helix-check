@@ -217,54 +217,61 @@ async function analyzeProjects() {
  */
 async function analyzeProjectFile(project) {
     return new Promise((resolve, reject) => {
-        var re = /\\/g;
-        var path = global.SolutionPath + "/" + project.Path.replace(re, '/');
 
-        const readInterface = readline.createInterface({
-            input: fs.createReadStream(path),
-            output: process.stdout,
-            console: false
-        });
+        try {
+            var re = /\\/g;
+            var path = global.SolutionPath + "/" + project.Path.replace(re, '/');
     
-        readInterface.on('line', function(line) {
-            var projectReferenceMatch = line.match(projectReferenceRegex);
-
-            if (projectReferenceMatch != null && projectReferenceMatch.length >= 3) {
-                var projectReferenced = projectReferenceMatch[2];
-
-                var projectNameMatch = projectReferenced.match(projectNameRegex);
-
-                if (projectNameMatch == null) {
-                    console.log(`Couldn't match ${projectReferenced} with project name regex`);
-                }
-
-                else if (projectNameMatch.length >= 3) {
-                    projectReferencedLayer = projectNameMatch[1];
-
-                    if (project.Layer == "Feature") {
-                        if (projectReferencedLayer != "Foundation") {
-                            //global.Analysis.Projects.find(x => x.Name == )
-                            project.IncorrectReferences.push(projectReferenced);
+            const readInterface = readline.createInterface({
+                input: fs.createReadStream(path),
+                output: process.stdout,
+                console: false
+            });
+        
+            readInterface.on('line', function(line) {
+                var projectReferenceMatch = line.match(projectReferenceRegex);
+    
+                if (projectReferenceMatch != null && projectReferenceMatch.length >= 3) {
+                    var projectReferenced = projectReferenceMatch[2];
+    
+                    var projectNameMatch = projectReferenced.match(projectNameRegex);
+    
+                    if (projectNameMatch == null) {
+                        console.log(`Couldn't match ${projectReferenced} with project name regex`);
+                    }
+    
+                    else if (projectNameMatch.length >= 3) {
+                        projectReferencedLayer = projectNameMatch[1];
+    
+                        if (project.Layer == "Feature") {
+                            if (projectReferencedLayer != "Foundation") {
+                                //global.Analysis.Projects.find(x => x.Name == )
+                                project.IncorrectReferences.push(projectReferenced);
+                            }
+                        }
+                        else if (project.Layer == "Foundation") {
+                            if (projectReferencedLayer != "Foundation") {
+                                project.IncorrectReferences.push(projectReferenced);
+                            }
+                        }
+                        else if (project.Layer == "Project") {
+                            // - Can reference anything -
                         }
                     }
-                    else if (project.Layer == "Foundation") {
-                        if (projectReferencedLayer != "Foundation") {
-                            project.IncorrectReferences.push(projectReferenced);
-                        }
-                    }
-                    else if (project.Layer == "Project") {
-                        // - Can reference anything -
-                    }
                 }
-            }
-        })
-        .on('close', () => {
+            })
+            .on('close', () => {
+                resolve('finished');
+            })
+            .on('error', err => {
+                console.log(`Couldn't open ${path}`);
+                resolve('finished');
+            }); 
+        } 
+        catch (error) {            
+            console.log(error);
             resolve('finished');
-        })
-        .on('error', err => {
-            console.log(`Couldn't open ${path}`);
-            resolve('finished');
-        });
+        }        
     });
 }
 
