@@ -22,7 +22,7 @@ const projectLineRegex = /^Project\(\"{(.+)}\"\) \= \"(.+)\", \"(.+)\", \"{(.+)}
  *  [2]: Project name
  * Example: "Helixbase.Foundation.ORM"
  */
-const projectNameRegex = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
+var projectNameRegex;// = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
 
 /**
  * Project path regular expression
@@ -132,6 +132,8 @@ async function check() {
 }
 
 async function analyzeSln(slnPath, projectName) {
+    projectNameRegex = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
+    
     return new Promise((resolve, reject) => {
         const readInterface = readline.createInterface({
             input: fs.createReadStream(slnPath),
