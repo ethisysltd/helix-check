@@ -204,9 +204,13 @@ async function analyzeSln(slnPath, projectName) {
 
 async function analyzeProjects() {
     //return new Promise((resolve, reject) => {
-        global.Analysis.Projects.forEach(project => {
+        for (const project of global.Analysis.Projects) {
             await analyzeProjectFile(project);
-        });
+          }
+
+        // global.Analysis.Projects.forEach(project => {
+            
+        // });
         //resolve('finished');
     //});
 }
