@@ -262,7 +262,8 @@ async function analyzeProjectFile(project) {
             resolve('finished');
         })
         .on('error', err => {
-            reject(err);
+            console.log(`Couldn't open ${path}`);
+            resolve('finished');
         });
     });
 }
