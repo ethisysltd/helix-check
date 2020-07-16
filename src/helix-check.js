@@ -217,8 +217,12 @@ async function analyzeProjects() {
  */
 async function analyzeProjectFile(project) {
     return new Promise((resolve, reject) => {
+        var find = '\\';
+        var re = new RegExp(find, 'g');
+        var path = global.SolutionPath + "/" + project.Path.replace(re, '');
+
         const readInterface = readline.createInterface({
-            input: fs.createReadStream(global.SolutionPath + "/" + project.Path.replaceAll('\\', '/')),
+            input: fs.createReadStream(path),
             output: process.stdout,
             console: false
         });
