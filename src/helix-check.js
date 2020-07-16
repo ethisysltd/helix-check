@@ -77,14 +77,10 @@ global.Analysis = {
         HasFoundationFolder: false,
         HasProjectFolder: false
     },
-    Projects: [
-        // {
-        //     Name: '',
-        //     IsFileNameCorrect: false,
-        //     IsFolderCorrect: false
-        // }
-    ]
+    Projects: [ ]
 };
+
+global.SolutionPath = "";
 
 async function check() {
 
@@ -93,6 +89,8 @@ async function check() {
         
         const solutionFile = core.getInput('solution-file');
         const projectName = core.getInput('project-name');
+
+        global.SolutionPath = path.dirname(solutionFile);
 
         console.log(`Solution file: ${solutionFile}`);
         console.log(`Project name: ${projectName}`);
@@ -219,9 +217,8 @@ async function analyzeProjects() {
  */
 async function analyzeProjectFile(project) {
     return new Promise((resolve, reject) => {
-        var basePath = path.dirname(project.Path);
         const readInterface = readline.createInterface({
-            input: fs.createReadStream(basePath + "/" + project.Path),
+            input: fs.createReadStream(global.SolutionPath + "/" + project.Path),
             output: process.stdout,
             console: false
         });
