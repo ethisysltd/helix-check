@@ -248,11 +248,13 @@ async function analyzeProjectFile(project) {
                                 if (projectReferencedLayer != "Foundation") {
                                     //global.Analysis.Projects.find(x => x.Name == )
                                     project.IncorrectReferences.push(projectReferenced);
+                                    console.log(`  Incorrect reference in ${project.Name}: referencing ${projectReferenced}`);
                                 }
                             }
                             else if (project.Layer == "Foundation") {
                                 if (projectReferencedLayer != "Foundation") {
                                     project.IncorrectReferences.push(projectReferenced);
+                                    console.log(`  Incorrect reference in ${project.Name}: referencing ${projectReferenced}`);
                                 }
                             }
                             else if (project.Layer == "Project") {
