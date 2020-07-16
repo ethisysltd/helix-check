@@ -203,12 +203,12 @@ async function analyzeSln(slnPath, projectName) {
 }
 
 async function analyzeProjects() {
-    return new Promise((resolve, reject) => {
+    //return new Promise((resolve, reject) => {
         global.Analysis.Projects.forEach(project => {
             analyzeProjectFile(project);
         });
-        resolve('finished');
-    });
+        //resolve('finished');
+    //});
 }
 
 /**
@@ -217,8 +217,7 @@ async function analyzeProjects() {
  */
 async function analyzeProjectFile(project) {
     return new Promise((resolve, reject) => {
-        var find = '\\';
-        var re = new RegExp(find, 'g');
+        var re = /\\/g;
         var path = global.SolutionPath + "/" + project.Path.replace(re, '');
 
         const readInterface = readline.createInterface({
