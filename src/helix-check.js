@@ -183,7 +183,7 @@ async function analyzeSln(slnPath, projectName) {
                         }
                         else if (projectPathMatch.length >= 4) {
                             // - Check if folder is correct - layer name -
-                            projectEntry.IsFolderCorrect = (projectPathMatch[1] == project.Layer);
+                            projectEntry.IsFolderCorrect = (projectPathMatch[1] == projectEntry.Layer);
 
                             // - Check if file name is correct -
                             projectEntry.IsFileNameCorrect = (projectPathMatch[3] == projectNameFromLine);
