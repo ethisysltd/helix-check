@@ -250,15 +250,12 @@ async function analyzeProjectFile(project) {
         
                             if (project.Layer == "Feature") {
                                 if (projectReferencedLayer != "Foundation") {
-                                    //global.Analysis.Projects.find(x => x.Name == )
                                     project.IncorrectReferences.push(projectReferenced);
-                                    console.log(`  Incorrect reference in ${project.Name}: referencing ${projectReferenced}`);
                                 }
                             }
                             else if (project.Layer == "Foundation") {
                                 if (projectReferencedLayer != "Foundation") {
                                     project.IncorrectReferences.push(projectReferenced);
-                                    console.log(`  Incorrect reference in ${project.Name}: referencing ${projectReferenced}`);
                                 }
                             }
                             else if (project.Layer == "Project") {
@@ -318,6 +315,7 @@ function checkResult() {
             }
 
             if (project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
+                console.log(`\nIncorrect references:`);
                 project.IncorrectReferences.forEach(reference => {
                     console.log(`  Incorrect reference in ${project.Name}: referencing ${reference}`);
                 });
