@@ -205,7 +205,7 @@ async function analyzeSln(slnPath, projectName) {
 async function analyzeProjects() {
     //return new Promise((resolve, reject) => {
         global.Analysis.Projects.forEach(project => {
-            analyzeProjectFile(project);
+            await analyzeProjectFile(project);
         });
         //resolve('finished');
     //});
@@ -273,6 +273,7 @@ async function analyzeProjectFile(project) {
             }
             else {
                 console.log(`${path} doesn't exist in file system`);
+                resolve('finished');
             }
         } 
         catch (error) {            
