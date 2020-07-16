@@ -100,7 +100,7 @@ async function check() {
             console.log('Solution file exists.');
 
             await analyzeSln(solutionFile, projectName);
-            analyzeProjects();
+            await analyzeProjects();
             result = checkResult();
         } 
         
@@ -201,7 +201,7 @@ async function analyzeSln(slnPath, projectName) {
     });
 }
 
-function analyzeProjects() {
+async function analyzeProjects() {
     global.Analysis.Projects.forEach(project => {
         await analyzeProjectFile(project);
     });
