@@ -86,7 +86,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Actions.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\ShowTitles\code\Helixbase.Feature.ShowTitles.csproj">
+      <Project>{84ca4784-c560-4ce7-be09-8187da0b4359}</Project>
+      <Name>Helixbase.Feature.ShowTitles</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

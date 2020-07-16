@@ -1,10 +1,8 @@
 bin/
 obj/
 .suo
-
-example-solution/invalid/.vs/Helixbase/config/applicationhost.config
-
+*.user
 
 example-solution/invalid/.vs/Helixbase-Invalid/config/applicationhost.config
-
 example-solution/valid/.vs/Helixbase/config/applicationhost.config
+

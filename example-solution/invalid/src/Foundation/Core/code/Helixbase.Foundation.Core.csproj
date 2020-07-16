@@ -106,6 +106,10 @@
       <Project>{70010557-c866-4d76-a031-c78411c7dbf4}</Project>
       <Name>Helixbase.Feature.Redirects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Project\Common\code\Helixbase.Project.Common.csproj">
+      <Project>{6f8c583b-e667-4deb-a603-77932c7803b0}</Project>
+      <Name>Helixbase.Project.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

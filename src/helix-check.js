@@ -319,7 +319,7 @@ function checkResult() {
             }
 
             if (project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
-                console.log(`\n Incorrect references:`);
+                console.log(` Incorrect references:`);
                 project.IncorrectReferences.forEach(reference => {
                     console.log(`  Incorrect reference: ${reference}`);
                 });
