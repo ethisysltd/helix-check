@@ -1,0 +1,36 @@
+name: Helix Check - Helixbase fresh
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  check_job:
+    name: Helix check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: npm setup
+        run: |
+          npm install
+
+      - name: Helix check action step
+        uses: ./ # Uses an action in the root directory
+        id: check
+        with:
+          solution-file: 'example-solution/valid-helixbase-fresh/Helixbase.sln'
+          project-name: 'Helixbase'
+          # website-folder: 'website'
+      
+      - name: Get the check result
+        run: echo "Check result - ${{ steps.check.outputs.result }}"
+      
+      - name: Get the output time
+        run: echo "The time was - ${{ steps.check.outputs.time }}"
+
+#on: [push]

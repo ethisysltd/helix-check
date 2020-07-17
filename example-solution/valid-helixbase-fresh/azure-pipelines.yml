@@ -1,0 +1,52 @@
+resources:
+- repo: self
+
+pool:
+  vmImage: 'windows-latest'
+  demands:
+  - msbuild
+  - visualstudio
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Install NuGet'
+  #inputs:
+    #versionSpec: 4.9.x
+    #checkLatest: false # Optional
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: Helixbase.sln
+    feedsToUse: config
+    nugetConfigPath: NuGet.config
+
+# Build the entire solution so the test assemblies are available
+- task: VSBuild@1
+  displayName: 'Build solution'
+  inputs:
+    solution: Helixbase.sln
+    platform: 'Any CPU'
+    configuration: 'Release'
+
+- task: VSTest@2
+  inputs:
+    testSelector: testAssemblies
+    testAssemblyVer2: '**\*Tests.dll'
+    runInParallel: true
+    codeCoverageEnabled: true
+
+- task: VSBuild@1
+  displayName: 'Publish Website WDP'
+  inputs:
+    solution: Helixbase.sln
+    msbuildArgs: '/t:Website\Helixbase_Website:WebPublish /p:PublishProfile=Package /p:DefaultPackageOutputDir=$(build.artifactstagingdirectory)'
+    platform: 'Any CPU'
+    configuration: 'Release'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
