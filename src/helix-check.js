@@ -159,7 +159,6 @@ async function analyzeSln(slnPath, projectName) {
         });
     
         readInterface.on('line', function(line) {
-            //console.log(line);
             var projectLineMatch = line.match(projectLineRegex);
 
             if (projectLineMatch != null && projectLineMatch.length >= 5) {
@@ -256,7 +255,7 @@ async function analyzeProjectFile(project) {
                         var projectNameMatch = projectReferenced.match(projectNameRegex);
         
                         if (projectNameMatch == null) {
-                            console.log(`Couldn't match ${projectReferenced} with project name regex`);
+                            core.warning(`Couldn't match ${projectReferenced} with project name regex`);
                         }
         
                         else if (projectNameMatch.length >= 3) {
@@ -284,17 +283,17 @@ async function analyzeProjectFile(project) {
                     resolve('finished');
                 })
                 .on('error', err => {
-                    console.log(`Couldn't open ${path}`);
+                    core.warning(`Couldn't open ${path}`);
                     resolve('finished');
                 });
             }
             else {
-                console.log(`${path} doesn't exist in file system`);
+                core.warning(`${path} doesn't exist in file system`);
                 resolve('finished');
             }
         } 
         catch (error) {            
-            console.log(error);
+            core.warning(error);
             resolve('finished');
         }        
     });
@@ -324,7 +323,7 @@ function checkResult() {
     if (global.Analysis.Projects != null) {
         global.Analysis.Projects.forEach((project) => {
             if (!project.IsFolderCorrect || !project.IsFileNameCorrect || project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
-                console.log(`\nIssues with project ${project.Name}`);
+                core.warning(`\nIssues with project ${project.Name}`);
             }
             
             if (!project.IsFolderCorrect) {
@@ -338,7 +337,7 @@ function checkResult() {
             }
 
             if (project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
-                core.warning(` Incorrect references:`);
+                console.log(` Incorrect references:`);
                 project.IncorrectReferences.forEach(reference => {
                     console.log(`  Incorrect reference: ${reference}`);
                 });
