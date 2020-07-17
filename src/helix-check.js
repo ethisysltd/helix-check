@@ -31,20 +31,22 @@ var projectNameRegex;// = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
  *  [0]: Full project path
  *  [1]: Layer name
  *  [2]: Project name
- *  [3]: Full project name
+ *  [3]: Website folder name
+ *  [4]: Full project name
  * Example: "src\Foundation\ORM\code\Helixbase.Foundation.ORM.csproj"
  */
-const projectPathRegex = new RegExp(`^src\\\\(.+)\\\\(.+)\\\\code\\\\(.+)\\.csproj$`);
+const projectPathRegex = new RegExp(`^src\\\\(.+)\\\\(.+)\\\\(.+)\\\\(.+)\\.csproj$`);
 
 /**
  * Project reference regular expression
  * Groups:
  *  [0]: Full project reference line
  *  [1]: Path excluding '\code' and csproj file name
- *  [2]: Project file name excluding '.csproj'
+ *  [2]: Website folder name
+ *  [3]: Project file name excluding '.csproj'
  * Example: "<ProjectReference Include="..\..\..\Feature\Redirects\code\Helixbase.Feature.Redirects.csproj">"
  */
-const projectReferenceRegex = /<ProjectReference Include=\"(.+)\\code\\(.+)\.csproj\"/;
+const projectReferenceRegex = /<ProjectReference Include=\"(.+)\\(.+)\\(.+)\.csproj\"/;
 
 const slnProjectFolderGuid = '2150E333-8FDC-42A3-9474-1A3956D46DE8';
 const slnProjectWebsiteGuid = 'FAE04EC0-301F-11D3-BF4B-00C04F79EFBC';
@@ -71,6 +73,9 @@ class ProjectEntry {
     }
 }
 
+/**
+ * Analysis object
+ */
 global.Analysis = {
     Solution: {
         HasFeatureFolder: false,
@@ -80,25 +85,34 @@ global.Analysis = {
     Projects: [ ]
 };
 
-global.SolutionPath = "";
+/**
+ * Configuration object
+ */
+global.Config = {
+    SolutionFile: "",
+    ProjectName: "",
+    WebsiteFolder: "",
 
+    SolutionPath: ""
+};
+
+/**
+ * Main check method
+ */
 async function check() {
 
     try {
         var result = false;
         
-        const solutionFile = core.getInput('solution-file');
-        const projectName = core.getInput('project-name');
+        readConfig();
 
-        global.SolutionPath = path.dirname(solutionFile);
+        console.log(`Solution file: ${global.Config.SolutionFile}`);
+        console.log(`Project name: ${global.Config.ProjectName}`);
 
-        console.log(`Solution file: ${solutionFile}`);
-        console.log(`Project name: ${projectName}`);
-
-        if (fs.existsSync(solutionFile)) {
+        if (fs.existsSync(global.Config.SolutionFile)) {
             console.log('Solution file exists.');
 
-            await analyzeSln(solutionFile, projectName);
+            await analyzeSln(global.Config.SolutionFile, global.Config.ProjectName);
             await analyzeProjects();
             result = checkResult();
         } 
@@ -107,16 +121,16 @@ async function check() {
             core.setFailed('Solution file does not exist.');
         }
 
-
-
-
         const time = (new Date()).toTimeString();
         core.setOutput('time', time);
         
         core.setOutput('result', result);
 
         if (!result) {
-            core.setFailed("Solution is not Helix compliant");
+            core.setFailed("Solution is not Helix compliant.");
+        }
+        else {
+            core.info("Solution is Helix compliant.")
         }
 
         // Get the JSON webhook payload for the event that triggered the workflow
@@ -127,9 +141,13 @@ async function check() {
     catch (error) {
         core.setFailed(error.message);
     }
-
 }
 
+/**
+ * Analyzes solution file
+ * @param {string} slnPath 
+ * @param {string} projectName 
+ */
 async function analyzeSln(slnPath, projectName) {
     projectNameRegex = new RegExp(`^${projectName}\\.(.+)\\.(.+)$`);
 
@@ -169,7 +187,7 @@ async function analyzeSln(slnPath, projectName) {
                     var projectEntry = new ProjectEntry(projectNameFromLine, projectPathFromLine, false, false);
 
                     if (projectNameMatch == null) {
-                        console.log(`Couldn't match ${projectNameFromLine} with project name regex`)
+                        core.warning(`Couldn't match ${projectNameFromLine} with project name regex`)
                     }
 
                     else if (projectNameMatch.length >= 3) {
@@ -177,15 +195,15 @@ async function analyzeSln(slnPath, projectName) {
                         var projectPathMatch = projectPathFromLine.match(projectPathRegex);
 
                         if (projectPathMatch == null) {
-                            console.log(`Couldn't match ${projectPathFromLine} with project path regex`)
+                            core.warning(`Couldn't match ${projectPathFromLine} with project path regex`)
                             projectEntry.IsFolderCorrect = false;
                         }
-                        else if (projectPathMatch.length >= 4) {
+                        else if (projectPathMatch.length >= 5) {
                             // - Check if folder is correct - layer name -
-                            projectEntry.IsFolderCorrect = (projectPathMatch[1] == projectEntry.Layer);
+                            projectEntry.IsFolderCorrect = (projectPathMatch[1] == projectEntry.Layer && projectPathMatch[3] == global.Config.WebsiteFolder);
 
                             // - Check if file name is correct -
-                            projectEntry.IsFileNameCorrect = (projectPathMatch[3] == projectNameFromLine);
+                            projectEntry.IsFileNameCorrect = (projectPathMatch[4] == projectNameFromLine);
                         }
                     }
 
@@ -202,17 +220,13 @@ async function analyzeSln(slnPath, projectName) {
     });
 }
 
+/**
+ * Anylyzes all projects
+ */
 async function analyzeProjects() {
-    //return new Promise((resolve, reject) => {
-        for (const project of global.Analysis.Projects) {
-            await analyzeProjectFile(project);
-          }
-
-        // global.Analysis.Projects.forEach(project => {
-            
-        // });
-        //resolve('finished');
-    //});
+    for (const project of global.Analysis.Projects) {
+        await analyzeProjectFile(project);
+    }
 }
 
 /**
@@ -224,7 +238,7 @@ async function analyzeProjectFile(project) {
 
         try {
             var re = /\\/g;
-            var path = global.SolutionPath + "/" + project.Path.replace(re, '/');
+            var path = global.Config.SolutionPath + "/" + project.Path.replace(re, '/');
     
             if (fs.existsSync(path)) {
                 const readInterface = readline.createInterface({
@@ -236,8 +250,8 @@ async function analyzeProjectFile(project) {
                 readInterface.on('line', function(line) {
                     var projectReferenceMatch = line.match(projectReferenceRegex);
         
-                    if (projectReferenceMatch != null && projectReferenceMatch.length >= 3) {
-                        var projectReferenced = projectReferenceMatch[2];
+                    if (projectReferenceMatch != null && projectReferenceMatch.length >= 4) {
+                        var projectReferenced = projectReferenceMatch[3];
         
                         var projectNameMatch = projectReferenced.match(projectNameRegex);
         
@@ -286,6 +300,9 @@ async function analyzeProjectFile(project) {
     });
 }
 
+/**
+ * Checks analysis result
+ */
 function checkResult() {
     var result = true;
 
@@ -321,7 +338,7 @@ function checkResult() {
             }
 
             if (project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
-                console.log(` Incorrect references:`);
+                core.warning(` Incorrect references:`);
                 project.IncorrectReferences.forEach(reference => {
                     console.log(`  Incorrect reference: ${reference}`);
                 });
@@ -331,6 +348,14 @@ function checkResult() {
     }
 
     return result;
+}
+
+function readConfig() {
+    global.Config.SolutionFile = core.getInput('solution-file');
+    global.Config.ProjectName = core.getInput('project-name');
+    global.Config.WebsiteFolder = core.getInput('website-folder');
+
+    global.Config.SolutionPath = path.dirname(global.Config.SolutionFile);
 }
 
 module.exports = check;
