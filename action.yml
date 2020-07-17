@@ -9,6 +9,10 @@ inputs:
     description: 'Project name - prefix for all project files'
     required: true
     default: 'Helixbase'
+  website-folder:
+    description: 'The name of the folder that always contain website project file'
+    required: false
+    default: 'website'
 outputs:
   result: # id of output
     description: 'If helix check successfull'
