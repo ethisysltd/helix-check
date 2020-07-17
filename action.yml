@@ -14,6 +14,9 @@ outputs:
     description: 'If helix check successfull'
   time: # id of output
     description: 'The time check has been made'
+branding:
+  icon: 'helix-check.png'
+  color: 'blue'
 runs:
   using: 'node12'
   main: 'src/main.js'

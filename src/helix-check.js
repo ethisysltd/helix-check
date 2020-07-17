@@ -44,7 +44,7 @@ const projectPathRegex = new RegExp(`^src\\\\(.+)\\\\(.+)\\\\code\\\\(.+)\\.cspr
  *  [2]: Project file name excluding '.csproj'
  * Example: "<ProjectReference Include="..\..\..\Feature\Redirects\code\Helixbase.Feature.Redirects.csproj">"
  */
-const projectReferenceRegex = /<ProjectReference Include=\"(.+)\\code\\(.+)\.csproj\">$/;
+const projectReferenceRegex = /<ProjectReference Include=\"(.+)\\code\\(.+)\.csproj\"/;
 
 const slnProjectFolderGuid = '2150E333-8FDC-42A3-9474-1A3956D46DE8';
 const slnProjectWebsiteGuid = 'FAE04EC0-301F-11D3-BF4B-00C04F79EFBC';
@@ -259,7 +259,9 @@ async function analyzeProjectFile(project) {
                                 }
                             }
                             else if (project.Layer == "Project") {
-                                // - Can reference anything -
+                                if (projectReferencedLayer == "Project") {
+                                    project.IncorrectReferences.push(projectReferenced);
+                                }
                             }
                         }
                     }
