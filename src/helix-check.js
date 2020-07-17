@@ -323,7 +323,8 @@ function checkResult() {
     if (global.Analysis.Projects != null) {
         global.Analysis.Projects.forEach((project) => {
             if (!project.IsFolderCorrect || !project.IsFileNameCorrect || project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
-                core.warning(`\nIssues with project ${project.Name}`);
+                console.log();
+                core.warning(`Issues with project ${project.Name}`);
             }
             
             if (!project.IsFolderCorrect) {
