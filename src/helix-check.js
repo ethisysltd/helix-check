@@ -180,7 +180,7 @@ async function analyzeSln(slnPath, projectName) {
                 }
 
                 // - Handle project -
-                else if (projectNameFromLine.startsWith(projectName) && !projectNameFromLine.endsWith("Tests")) { // TODO: Add check for Tests project
+                else if (projectNameFromLine.startsWith(projectName) && !projectNameFromLine.endsWith("Tests") && !projectNameFromLine != `${global.Config.ProjectName}.Website`) { // TODO: Add check for Tests project
                     var projectNameMatch = projectNameFromLine.match(projectNameRegex);
 
                     var projectEntry = new ProjectEntry(projectNameFromLine, projectPathFromLine, false, false);
