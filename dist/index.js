@@ -22180,6 +22180,8 @@ function checkResult() {
         });
     }
 
+    console.log("");
+
     return result;
 }
 

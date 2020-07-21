@@ -1,11 +1,11 @@
 name: 'Helix Check'
 description: 'Check if solution is following Helix rules'
 inputs:
-  solution-file:  # id of input
+  solution-file:
     description: 'Solution file'
     required: true
     default: 'SitecoreHelix.sln'
-  project-name:  # id of input
+  project-name:
     description: 'Project name - prefix for all project files'
     required: true
     default: 'Helixbase'
@@ -14,9 +14,9 @@ inputs:
     required: false
     default: 'website'
 outputs:
-  result: # id of output
+  result:
     description: 'If helix check successfull'
-  time: # id of output
+  time:
     description: 'The time check has been made'
 branding:
   icon: 'check-circle'
