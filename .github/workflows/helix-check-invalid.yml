@@ -15,10 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: npm setup
-        run: |
-          npm install
-
       - name: Helix Check
         uses: ./ # Uses an action in the root directory
         id: check
