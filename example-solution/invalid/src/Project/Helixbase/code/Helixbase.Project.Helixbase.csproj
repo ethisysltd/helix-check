@@ -134,6 +134,12 @@
   <ItemGroup>
     <Folder Include="Content\Project\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\code\Helixbase.Project.Common.csproj">
+      <Project>{6f8c583b-e667-4deb-a603-77932c7803b0}</Project>
+      <Name>Helixbase.Project.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

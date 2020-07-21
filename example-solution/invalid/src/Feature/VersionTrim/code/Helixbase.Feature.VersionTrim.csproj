@@ -87,6 +87,10 @@
     <Compile Include="Actions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Project\Common\code\Helixbase.Project.Common.csproj">
+      <Project>{6f8c583b-e667-4deb-a603-77932c7803b0}</Project>
+      <Name>Helixbase.Project.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ShowTitles\code\Helixbase.Feature.ShowTitles.csproj">
       <Project>{84ca4784-c560-4ce7-be09-8187da0b4359}</Project>
       <Name>Helixbase.Feature.ShowTitles</Name>
