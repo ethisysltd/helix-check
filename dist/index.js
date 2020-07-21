@@ -22173,7 +22173,7 @@ function checkResult() {
             if (project.IncorrectReferences != null && project.IncorrectReferences.length > 0) {
                 console.log(` Incorrect references:`);
                 project.IncorrectReferences.forEach(reference => {
-                    console.log(`  Incorrect reference: ${reference}`);
+                    console.log(`  - ${reference}`);
                 });
                 result = false;
             }
