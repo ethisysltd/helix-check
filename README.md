@@ -21,12 +21,36 @@ GitHub action for Sitecore projects which follow Helix principles - https://heli
 ### Workflow
 
 ```
-uses: ethisysltd/helix-check@v1.0
-id: check
-with:
-    solution-file: 'Helixbase.sln'
-    project-name: 'Helixbase'
-    website-folder: 'website'
+name: Helix Check
+
+on:
+  push:
+    branches: [ develop, master ]
+  pull_request:
+    branches: [ develop, master ]
+
+jobs:
+  check_job:
+    name: Helix check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Helix Check
+        uses: ethisysltd/helix-check@v1.0
+        id: check
+        with:
+          solution-file: 'Helixbase.sln'
+          project-name: 'Helixbase'
+          website-folder: 'website'
+      
+      - name: Get the check result
+        run: echo "Check result - ${{ steps.check.outputs.result }}"
+      
+      - name: Get the output time
+        run: echo "The time was - ${{ steps.check.outputs.time }}"
 ```
 
 ### Successful result
