@@ -19,7 +19,7 @@ outputs:
   time: # id of output
     description: 'The time check has been made'
 branding:
-  icon: 'helix-check.png'
+  icon: 'check-circle'
   color: 'blue'
 runs:
   using: 'node12'
