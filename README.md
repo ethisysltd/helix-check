@@ -29,7 +29,7 @@ The time check has been made.
 ## Example usage
 
 ```
-uses: actions/helix-check
+uses: ethisysltd/helix-check@v1.0
 id: check
 with:
     solution-file: 'Helixbase.sln'
