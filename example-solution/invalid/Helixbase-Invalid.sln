@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Foundation", "Foundation", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{41AC9AD8-3D81-4C55-9330-B9CA9DFD8554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helixbase.Foundation.Serialization", "src\Foundation\Serialization\code\Helixbase.Feature.Serialization.csproj", "{4238D5C5-AFD2-4DF5-BF3D-ADB9D46ADC08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helixbase.Foundation.Serialization", "src\Foundation\Serialization\code\Helixbase.Foundation.Serialization.csproj", "{4238D5C5-AFD2-4DF5-BF3D-ADB9D46ADC08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ORM", "ORM", "{01ACDA66-22F3-4F9B-BF2A-861D3CE46784}"
 EndProject
