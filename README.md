@@ -1,6 +1,26 @@
 # Helix Check GitHub Action
 GitHub action for Sitecore projects which follow Helix principles - https://helix.sitecore.net/. Checks if solution complies with Helix rules.
 
+## General rules
+
+### Projects references:
+
+- _Feature_ layer projects can only reference _Foundation_
+- _Foundation_ layer projects can only reference other _Foundations_
+- _Project_ layer projects can reference _Feature_ and _Foundation_ but not other _Projects_
+
+### Folders structure and naming convention:
+
+- There are layer folders specified in the solution
+  - Feature
+  - Foundation
+  - Project
+
+- Projects are placed in correct folders, for example:
+  - `src\Foundation\ORM\website\Helixbase.Foundation.ORM.csproj` - correct
+  - `src\Feature\ORM\website\Helixbase.Foundation.ORM.csproj` - incorrect
+
+
 ## Inputs
 
 | Input  | Description | Usage |
