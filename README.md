@@ -1,3 +1,5 @@
+<img src="https://i0.wp.com/ethisys.co.uk/wp-content/uploads/2020/04/software_specialism.png?fit=588%2C291&ssl=1" height="291px" />
+
 # Helix Check GitHub Action
 GitHub action for Sitecore projects which follow Helix principles - https://helix.sitecore.net/. Checks if solution complies with Helix rules.
 
