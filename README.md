@@ -29,7 +29,7 @@ GitHub action for Sitecore projects which follow Helix principles - https://heli
 | ---              |  ---   |   ---   |
 | `solution-file`  | Path to the solution that will be analyzed.  | Required |
 | `project-name`   | The name of your project. | Required |
-| `website-folder` | The name of the folder that always contain website project file.<br/> Default `"website"`. | Optional |
+| `website-folder` | The name of the folder that contains the website project file. In older versions of Helix, this was named `"code"` <br/> Default `"website"`. | Optional |
 
 ## Outputs
 
