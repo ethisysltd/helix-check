@@ -35,8 +35,8 @@ GitHub action for Sitecore projects which follow Helix principles - https://heli
 
 | Output  | Description | 
 | ---       |     ---   | 
-| `result`  | Boolean result of the analysis. True if helix check successfull. |
-| `time`    | The time check has been made. |
+| `result`  | Boolean result of the analysis. `True` if helix check is successful. |
+| `time`    | Time taken for check to complete. |
 
 ## Example usage
 
