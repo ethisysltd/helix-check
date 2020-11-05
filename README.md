@@ -41,7 +41,7 @@ GitHub action for Sitecore projects which follow Helix principles - https://heli
 ## Example usage
 
 ### Workflow
-Create a yml file with the following contents (for example) in `github\workflows\`
+Create a yml file with the following contents (for example) in `.github\workflows\` folder
 
 ```
 name: Helix Check
