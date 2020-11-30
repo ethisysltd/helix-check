@@ -2,6 +2,8 @@ bin/
 obj/
 .suo
 *.user
+*.bak
+
 
 node_modules/
 
@@ -9,3 +11,4 @@ example-solution/invalid/.vs/Helixbase-Invalid/config/applicationhost.config
 example-solution/valid/.vs/Helixbase/config/applicationhost.config
 
 example-solution/invalid/packages/
+

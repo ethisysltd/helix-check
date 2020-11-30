@@ -112,7 +112,10 @@ async function check() {
 
         if (fs.existsSync(global.Config.SolutionFile)) {
             console.log('Solution file exists.');
-            console.log(`Excluded projects: ${global.Config.ExcludedProjects}`);
+
+            if (global.Config.ExcludedProjects.length > 0) {
+                console.warning(`Excluded projects: ${global.Config.ExcludedProjects}`);
+            }            
 
             await analyzeSln(global.Config.SolutionFile, global.Config.ProjectName);
             await analyzeProjects();

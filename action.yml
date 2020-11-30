@@ -14,7 +14,7 @@ inputs:
     required: false
     default: 'website'
   excluded-projects:
-    description: 'List of project names that won`t be analyzed. Has to be a string with comma delimited project names.'
+    description: 'List of project names that won`t be analyzed. Due to the limitations of GitHub actions it has to be a string with comma delimited project names, e.g. NS.Project1,NS.Project2'
     required: false
     default: ''
 outputs:
