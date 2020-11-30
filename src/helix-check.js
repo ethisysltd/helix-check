@@ -114,7 +114,7 @@ async function check() {
             console.log('Solution file exists.');
 
             if (global.Config.ExcludedProjects.length > 0) {
-                console.warning(`Excluded projects: ${global.Config.ExcludedProjects}`);
+                core.warning(`Projects excluded from analysis: ${global.Config.ExcludedProjects}`);
             }            
 
             await analyzeSln(global.Config.SolutionFile, global.Config.ProjectName);
