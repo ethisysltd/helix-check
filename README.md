@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Helix Check
-        uses: ethisysltd/helix-check@v1.0
+        uses: ethisysltd/helix-check@v1.0.1
         id: check
         with:
           solution-file: 'Helixbase.sln'
