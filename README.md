@@ -26,10 +26,11 @@ GitHub action for Sitecore projects which follow Helix principles - https://heli
 ## Inputs
 
 | Input  | Description | Usage |
-| ---              |  ---   |   ---   |
-| `solution-file`  | Path to the solution that will be analyzed.  | Required |
-| `project-name`   | The name of your project. | Required |
-| `website-folder` | The name of the folder that contains the website project file. In older versions of Helix, this was named `"code"` <br/> Default `"website"`. | Optional |
+| ---                 |  ---   |   ---   |
+| `solution-file`     | Path to the solution that will be analyzed.  | Required |
+| `project-name`      | The name of your project. | Required |
+| `website-folder`    | The name of the folder that contains the website project file. In older versions of Helix, this was named `"code"` <br/> Default `"website"`. | Optional |
+| `excluded-projects` | List of project names that won`t be analyzed. Due to the limitations of GitHub actions it has to be a string with comma delimited project names, e.g. 'NS.Project1,NS.Project2' | Optional |
 
 ## Outputs
 
@@ -68,6 +69,7 @@ jobs:
           solution-file: 'Helixbase.sln'
           project-name: 'Helixbase'
           website-folder: 'website'
+          excluded-projects: 'Helixbase.Foundation.NotFollowingHelix,Helixbase.Feature.RatherNotFollowingHelix'
       
       - name: Get the check result
         run: echo "Check result - ${{ steps.check.outputs.result }}"

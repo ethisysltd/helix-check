@@ -13,6 +13,10 @@ inputs:
     description: 'The name of the folder that always contain website project file'
     required: false
     default: 'website'
+  excluded-projects:
+    description: 'List of project names that won`t be analyzed. Due to the limitations of GitHub actions it has to be a string with comma delimited project names, e.g. NS.Project1,NS.Project2'
+    required: false
+    default: ''
 outputs:
   result:
     description: 'If helix check successfull'
