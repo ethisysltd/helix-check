@@ -22,7 +22,7 @@ jobs:
           solution-file: 'example-solution/invalid/Helixbase-Invalid.sln'
           project-name: 'Helixbase'
           website-folder: 'code'
-          excluded-projects: 'Helixbase.Feature.NotFollowingHelix,Helixbase.Foundation.ORM, Helixbase.Feature.Hero, Helixbase.Project.Helixbase, Helixbase.Feature.VersionTrim,Helixbase.Foundation.Core'
+          excluded-projects: 'Helixbase.Feature.NotFollowingHelix'
       
       - name: Get the check result
         run: echo "Check result - ${{ steps.check.outputs.result }}"
