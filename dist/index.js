@@ -21926,7 +21926,8 @@ global.Config = {
     ProjectName: "",
     WebsiteFolder: "",
 
-    SolutionPath: ""
+    SolutionPath: "",
+    ExcludedProjects: []
 };
 
 /**
@@ -21944,6 +21945,7 @@ async function check() {
 
         if (fs.existsSync(global.Config.SolutionFile)) {
             console.log('Solution file exists.');
+            console.log(`Excluded projects: ${global.Config.ExcludedProjects}`);
 
             await analyzeSln(global.Config.SolutionFile, global.Config.ProjectName);
             await analyzeProjects();
@@ -22012,6 +22014,10 @@ async function analyzeSln(slnPath, projectName) {
                     }
                 }
 
+                else if (global.Config.ExcludedProjects.includes(projectNameFromLine)) {                    
+                    core.info(`Skipping ${projectNameFromLine} project analysis`);
+                }
+
                 // - Handle project -
                 else if (projectNameFromLine.startsWith(projectName) && !projectNameFromLine.endsWith("Tests") && projectNameFromLine != `${global.Config.ProjectName}.Website`) { // TODO: Add check for Tests project
                     var projectNameMatch = projectNameFromLine.match(projectNameRegex);
@@ -22019,7 +22025,7 @@ async function analyzeSln(slnPath, projectName) {
                     var projectEntry = new ProjectEntry(projectNameFromLine, projectPathFromLine, false, false);
 
                     if (projectNameMatch == null) {
-                        core.warning(`Couldn't match ${projectNameFromLine} with project name regex`)
+                        core.warning(`Couldn't match ${projectNameFromLine} with project name regex`);
                     }
 
                     else if (projectNameMatch.length >= 3) {
@@ -22027,7 +22033,7 @@ async function analyzeSln(slnPath, projectName) {
                         var projectPathMatch = projectPathFromLine.match(projectPathRegex);
 
                         if (projectPathMatch == null) {
-                            core.warning(`Couldn't match ${projectPathFromLine} with project path regex`)
+                            core.warning(`Couldn't match ${projectPathFromLine} with project path regex`);
                             projectEntry.IsFolderCorrect = false;
                         }
                         else if (projectPathMatch.length >= 5) {
@@ -22189,6 +22195,9 @@ function readConfig() {
     global.Config.SolutionFile = core.getInput('solution-file');
     global.Config.ProjectName = core.getInput('project-name');
     global.Config.WebsiteFolder = core.getInput('website-folder');
+    
+    var excludedProjects = core.getInput('excluded-projects');
+    global.Config.ExcludedProjects = excludedProjects.split(",");
 
     global.Config.SolutionPath = path.dirname(global.Config.SolutionFile);
 }

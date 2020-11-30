@@ -22,6 +22,7 @@ jobs:
           solution-file: 'example-solution/invalid/Helixbase-Invalid.sln'
           project-name: 'Helixbase'
           website-folder: 'code'
+          excluded-projects: 'Helixbase.Foundation.Core,Helixbase.Feature.VersionTrim'
       
       - name: Get the check result
         run: echo "Check result - ${{ steps.check.outputs.result }}"
