@@ -366,8 +366,15 @@ function readConfig() {
     global.Config.ProjectName = core.getInput('project-name');
     global.Config.WebsiteFolder = core.getInput('website-folder');
     
-    var excludedProjects = core.getInput('excluded-projects');
-    global.Config.ExcludedProjects = excludedProjects.split(",");
+    var excludedProjectsInput = core.getInput('excluded-projects');
+
+    if (excludedProjectsInput) {
+        var excludedProjects = excludedProjectsInput.split(",");
+
+        for (var project of excludedProjects) {
+            global.Config.ExcludedProjects.push(project.trim());        
+        }
+    }    
 
     global.Config.SolutionPath = path.dirname(global.Config.SolutionFile);
 }

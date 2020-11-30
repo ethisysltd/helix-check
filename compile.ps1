@@ -1,1 +1,1 @@
-ncc build src\main.js
+ncc build src\main.js -m
