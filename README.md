@@ -86,6 +86,8 @@ Solution file exists.
 Solution is Helix compliant.
 ```
 
+![Succesful result](/res/demo-success.gif?raw=true "Succesful result")
+
 ### Unsuccessful result
 ```
 Solution file: invalid/Helixbase-Invalid.sln
@@ -114,3 +116,5 @@ Solution file exists.
 
 ##[error]Solution is not Helix compliant.
 ```
+
+![Unsuccessful result](/res/demo-failed.gif?raw=true "Unsuccessful result")
